@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated>
+      <config projectName="lab1" targetName="lab1" />
+    </generated>
+  </component>
+  <component name="CMakeSettings" AUTO_RELOAD="true">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a4bfd7d4-efe4-40a4-9a3d-716a068f9330" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
+  <component name="ProjectId" id="1QXj53fjHc0tfH7JJvrWL2AvYw1" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="lab1" type="CMakeRunConfiguration" factoryName="Application" PASS_PARENT_ENVS_2="true" PROJECT_NAME="lab1" TARGET_NAME="lab1" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="lab1" RUN_TARGET_NAME="lab1">
+      <method v="2">
+        <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a4bfd7d4-efe4-40a4-9a3d-716a068f9330" name="Default Changelist" comment="" />
+      <created>1567923648788</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1567923648788</updated>
+      <workItem from="1567923651960" duration="2971000" />
+      <workItem from="1567929028265" duration="4653000" />
+      <workItem from="1568464226920" duration="347000" />
+      <workItem from="1568466176155" duration="811000" />
+      <workItem from="1568690106352" duration="2224000" />
+      <workItem from="1569169628429" duration="673000" />
+      <workItem from="1569284302666" duration="1167000" />
+      <workItem from="1571329553066" duration="599000" />
+      <workItem from="1571337020650" duration="599000" />
+      <workItem from="1571485196390" duration="2636000" />
+      <workItem from="1571505855800" duration="599000" />
+      <workItem from="1571513229781" duration="599000" />
+      <workItem from="1571563385518" duration="3117000" />
+      <workItem from="1571683987978" duration="599000" />
+      <workItem from="1571715618956" duration="598000" />
+      <workItem from="1571731077846" duration="599000" />
+      <workItem from="1571834731907" duration="599000" />
+      <workItem from="1572605651158" duration="599000" />
+      <workItem from="1572608677396" duration="34000" />
+      <workItem from="1572608731168" duration="1031000" />
+      <workItem from="1572705364927" duration="89000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
