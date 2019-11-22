@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="244.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.172-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+   <children>
+      <Button id="button" fx:id="button" cancelButton="true" layoutX="147.0" layoutY="100.0" mnemonicParsing="false" onAction="#handleClick" prefHeight="44.0" prefWidth="107.0" text="Choose file" />
+   </children>
+</AnchorPane>
