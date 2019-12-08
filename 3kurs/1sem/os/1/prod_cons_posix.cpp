@@ -1,44 +1,43 @@
 #include <iostream>
-#include <pthread.h>
-#include <cstdlib>
 #include <semaphore.h>
 #include <zconf.h>
 
+
 #define CONSUMERS_NUM 5
-#define PRODUCERS_NUM 2
+#define PRODUCERS_NUM 5
 #define QUEUE_SIZE 6
+
 
 using namespace std;
 
-sem_t sem_single_prod, sem_single_cons, sem_min_queue_size, sem_max_queue_size, sem_output, sem_one_item;
-
-
-struct Node  {
+struct Node {
     int key;
-    struct Node *next;
+    Node *next;
 };
+
 
 struct Queue {
-    struct Node *front, *rear;
+    Node *front, *rear;
 };
 
-struct Node *newNode(int k) {
-    struct Node *temp = (struct Node *) malloc(sizeof(struct Node));
+Node *newNode(int k) {
+    Node *temp = new Node();
     temp->key = k;
-    temp->next = NULL;
+    temp->next = nullptr;
     return temp;
 }
 
-struct Queue *createQueue() {
-    struct Queue *q = (struct Queue *) malloc(sizeof(struct Queue));
-    q->front = q->rear = NULL;
+Queue *createQueue() {
+    Queue *q = new Queue();
+    q->front = q->rear = nullptr;
     return q;
 }
 
-void enqueue(struct Queue *q, int k) {
-    struct Node *temp = newNode(k);
+void enqueue(Queue *q, int k) {
 
-    if (q->rear == NULL) {
+    Node *temp = newNode(k);
+
+    if (q->rear == nullptr) {
         q->front = q->rear = temp;
         return;
     }
@@ -47,50 +46,49 @@ void enqueue(struct Queue *q, int k) {
     q->rear = temp;
 }
 
-int dequeue(struct Queue *q) {
-    if (q->front == NULL)
-        return NULL;
 
-    struct Node *temp = q->front;
-    int val = temp->key;
+int deque(Queue *q) {
+
+    if (q->front == nullptr) {
+        return 0;
+    }
+
+    Node *temp = q->front;
+    int res = temp->key;
 
     q->front = q->front->next;
 
-    if (q->front == NULL) {
-        q->rear = NULL;
+    if (q->front == nullptr) {
+        q->rear = nullptr;
     }
     free(temp);
-    return val;
+
+    return res;
 }
+
 void print_queue(struct Queue *q) {
-    cout<< "queue : ";
-    if (q->front == NULL)
+    cout << "queue : ";
+    if (q->front == NULL) {
         return;
+    }
 
     struct Node *temp = q->front;
     do {
-        cout<<temp->key<< " ";
-    }while (temp-> next != NULL);
-
-
-
+        cout << temp->key << " ";
+        temp = temp->next;
+    } while (temp != nullptr);
 }
+
 
 Queue *que = createQueue();
 
 void *functionConsume(void *);
-
 void *functionProduce(void *);
 
-string getQueueString(Queue *items, char *type, int num);
-
-
-int queueCreated = 0;
+sem_t sem_single_prod, sem_single_cons, sem_min_queue_size, sem_max_queue_size, sem_output, sem_one_item;
 
 int main() {
     pthread_t consumersThreads[CONSUMERS_NUM], producersThreads[PRODUCERS_NUM];
-
-
 
 
     sem_init(&sem_single_prod, 0, 1);
@@ -98,34 +96,34 @@ int main() {
     sem_init(&sem_min_queue_size, 0, 0);
     sem_init(&sem_max_queue_size, 0, QUEUE_SIZE);
     sem_init(&sem_output, 0, 1);
-    sem_init(&sem_queue_created, 0, 0);
     sem_init(&sem_one_item, 0, 1);
 
 
-
-    for (unsigned int &producerThread : producersThreads) {
-        pthread_create(&producerThread, nullptr, functionProduce, nullptr);
+    for (int i = 0; i < PRODUCERS_NUM; i++) {
+        pthread_create(&producersThreads[i], nullptr, functionProduce, nullptr);
     }
     sleep(2);
-
-    for (unsigned int &consumerThread : consumersThreads) {
-        pthread_create(&consumerThread, nullptr, functionConsume, nullptr);
-    }
-    for (unsigned int &consumerThread : consumersThreads) {
-        pthread_join(consumerThread, nullptr);
+    for (int i = 0; i < CONSUMERS_NUM; i++) {
+        pthread_create(&consumersThreads[i], nullptr, functionConsume, nullptr);
     }
 
-    for (unsigned int &producerThread : producersThreads) {
-        pthread_join(producerThread, nullptr);
+    for (int i = 0; i < CONSUMERS_NUM; i++) {
+        pthread_join(consumersThreads[i], nullptr);
+    }
+    for (int i = 0; i < PRODUCERS_NUM; i++) {
+        pthread_join(producersThreads[i], nullptr);
     }
 
     sem_destroy(&sem_single_prod);
+    sem_destroy(&sem_single_cons);
+    sem_destroy(&sem_min_queue_size);
+    sem_destroy(&sem_max_queue_size);
+    sem_destroy(&sem_output);
+    sem_destroy(&sem_one_item);
     return 0;
 }
 
 void *functionConsume(void *arg) {
-
-
 
     for (int k = 0; k < 10; k++) {
         sem_wait(&sem_min_queue_size);
@@ -136,27 +134,25 @@ void *functionConsume(void *arg) {
 
         sem_wait(&sem_one_item);
         if (size == 1) {
-            int num = dequeue(que);
+            int num = deque(que);
 
             sem_wait(&sem_output);
-            cout << "consumed : "<< num<<endl;
+            cout << "consumed : " << num << endl;
             print_queue(que);
-            cout<<endl;
+            cout << endl;
             sem_post(&sem_output);
 
             sem_post(&sem_one_item);
         } else {
             sem_post(&sem_one_item);
-            int num = dequeue(que);
 
-
+            int num = deque(que);
             sem_wait(&sem_output);
-            cout <<"consumed : "<< num<<endl;
+            cout << "consumed : " << num << endl;
             print_queue(que);
-            cout<<endl;
+            cout << endl;
             sem_post(&sem_output);
         }
-
 
         sem_post(&sem_max_queue_size);
         sem_post(&sem_single_cons);
@@ -167,15 +163,11 @@ void *functionConsume(void *arg) {
 
 void *functionProduce(void *arg) {
 
-
     for (int k = 0; k < 100; k++) {
         sem_wait(&sem_max_queue_size);
         sem_wait(&sem_single_prod);
 
         int num = rand() % 20;
-
-
-        sem_getvalue(&sem_queue_created, &queueCreated);
 
         int size;
         sem_getvalue(&sem_min_queue_size, &size);
@@ -187,28 +179,24 @@ void *functionProduce(void *arg) {
             enqueue(que, num);
 
             sem_wait(&sem_output);
-            cout <<"produced : "<< num<<endl;
+            cout << "produced : " << num << endl;
             print_queue(que);
-            cout<<endl;
+            cout << endl;
             sem_post(&sem_output);
         } else {
-
             enqueue(que, num);
 
             sem_wait(&sem_output);
-            cout <<"produced : "<< num<<endl;
+            cout << "produced : " << num << endl;
             print_queue(que);
-            cout<<endl;
+            cout << endl;
             sem_post(&sem_output);
             sem_post(&sem_one_item);
-
         }
-
 
         sem_post(&sem_min_queue_size);
         sem_post(&sem_single_prod);
         sleep(rand() % 3);
     }
     return nullptr;
-
 }
