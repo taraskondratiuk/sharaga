@@ -87,7 +87,7 @@ int main() {
 
     pthread_create(&barberThread, nullptr, functionBarber, nullptr);
     sleep(1);
-    for (unsigned int &visitorThread : visitorThreads) {
+    for (unsigned long long int visitorThread : visitorThreads) {
         pthread_create(&visitorThread, nullptr, functionVisitor, nullptr);
         sleep(2);
     }
@@ -139,14 +139,15 @@ void *functionBarber(void *arg) {
         sem_wait(&visitor_sem);
 
         int num = dequeue(q);
-        sem_post(&barber_sem);
 
         sem_wait(&output_sem);
         cout << "barber shaves client " << num << endl;
         cout << getQueueString(q);
         sem_post(&output_sem);
 
-        sleep((rand() % 2) + 10);
+        sleep((rand() % 2) + 3);
+
+        sem_post(&barber_sem);
 
         sem_wait(&visitor_left_sem);
 
