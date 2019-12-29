@@ -1,7 +1,7 @@
 #include <windows.h>
 #include <iostream>
-#include <deque>
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -12,67 +12,61 @@ struct FileInfo {
     bool is_readonly{};
 };
 
-void getFilesInfo(const string &directory, const string &filter, deque<FileInfo> &info);
+void getFilesInfo(basic_string<char> path, vector<FileInfo> &info);
 
-void printInfo(const deque<FileInfo> &info);
+void printInfo(const vector<FileInfo> &info);
+
+FileInfo getFileInfoNode(WIN32_FIND_DATA data, basic_string<char> path);
 
 int main(int argc, char **argv) {
-    deque<FileInfo> info;
+    vector<FileInfo> info;
 
-    getFilesInfo("C:/Users/Taras/Desktop/io/", "*", info);
+    getFilesInfo(argv[1], info);
     printInfo(info);
 
     return 0;
 }
 
-void getFilesInfo(const string &directory, const string &filter, deque<FileInfo> &info) {
-    deque<FileInfo> file_info;
+
+void getFilesInfo(basic_string<char> path, vector<FileInfo> &info) {
 
     WIN32_FIND_DATA file_data;
-    WIN32_FIND_DATA dir_data;
-    HANDLE file_handle = FindFirstFile((directory + filter).c_str(), &file_data);
+    HANDLE file_handle = FindFirstFile((path).c_str(), &file_data);
 
-    HANDLE dir_file_handle = FindFirstFile((directory + "*" ).c_str(), &dir_data);
-    if (file_handle != INVALID_HANDLE_VALUE) {
+    if (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY && path.back() != '*') {
+        getFilesInfo(path + "/*", info);
+        return;
+    }
 
+    if (path.back() == '*') {
+        path.pop_back();
         do {
             string file_name(file_data.cFileName);
             if (file_name == ".." || file_name == ".") {
                 continue;
             }
             if (file_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-                getFilesInfo((directory + file_name + "/"), filter, info);
+                getFilesInfo(path + file_name + "/*", info);
                 continue;
             }
-
-            FileInfo current;
-
-            current.name = directory + file_name;
-            current.size = (file_data.nFileSizeHigh * (MAXDWORD + 1)) + file_data.nFileSizeLow;
-            current.is_readonly = file_data.dwFileAttributes & FILE_ATTRIBUTE_READONLY;
-            current.is_hidden = file_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN;
-
-            info.push_back(current);
+            info.push_back(getFileInfoNode(file_data, path + file_name));
         } while (FindNextFile(file_handle, &file_data) != 0);
-
-        FindClose(file_handle);
-    } else if (dir_file_handle != INVALID_HANDLE_VALUE) {
-        do {
-            string file_name(dir_data.cFileName);
-            if (file_name == ".." || file_name == ".") {
-                continue;
-            }
-            if (dir_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) {
-                getFilesInfo((directory + file_name + "/"), filter, info);
-                continue;
-            }
-
-        } while (FindNextFile(dir_file_handle, &dir_data) != 0);
+    } else {
+        info.push_back(getFileInfoNode(file_data, path));
     }
 }
 
+FileInfo getFileInfoNode(WIN32_FIND_DATA data, basic_string<char> path) {
+    FileInfo current;
 
-void printInfo(const deque<FileInfo> &info) {
+    current.name = path;
+    current.size = (data.nFileSizeHigh * (MAXDWORD + 1)) + data.nFileSizeLow;
+    current.is_readonly = data.dwFileAttributes & FILE_ATTRIBUTE_READONLY;
+    current.is_hidden = data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN;
+    return  current;
+}
+
+void printInfo(const vector<FileInfo> &info) {
     for (auto &i : info) {
         cout << i.name << endl;
         cout << "\t Size: " << i.size << " bytes" << endl;
