@@ -1,0 +1,54 @@
+#airplane {
+    background-image: url("images/airplane.png");
+    width: 917px;
+    height: 210px;
+    text-align: center;
+}
+
+#seat-area {
+    width: 521px;
+    height: 114px;
+    margin-left: 230px;
+    padding-top: 25px;
+}
+
+.seat-row {
+    width: auto;
+    height: auto;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.seat {
+    background-color: #4B4BFF;
+    width: 16px;
+    height: 11px;
+    padding-bottom: 2px;
+    padding-left: 5px;
+    margin: 0;
+    display: inline-block;
+}
+
+#confirm-button {
+    padding: 16px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border: 2px solid #4B4BFF;
+    margin-top: 50px;
+}
+
+#confirm-button:hover {
+    background-color: #4B4BFF;
+    color: white;
+}
