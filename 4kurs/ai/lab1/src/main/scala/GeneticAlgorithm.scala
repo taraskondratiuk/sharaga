@@ -30,7 +30,7 @@ object GeneticAlgorithm {
       case c                  =>
         val child1 = Array.fill(p2.length)(0)
         val child2 = Array.fill(p2.length)(0)
-        val (cycles1, cycles2) = c.splitAt(c.length / 2)
+        val (cycles1, cycles2) = Random.shuffle(c.toSeq).splitAt(c.length / 2)
         cycles1.flatten.foreach { idx => child1(idx) = p1(idx); child2(idx) = p2(idx) }
         cycles2.flatten.foreach { idx => child1(idx) = p1(idx); child2(idx) = p2(idx) }
         Seq(maybeMutate(child1), maybeMutate(child2))

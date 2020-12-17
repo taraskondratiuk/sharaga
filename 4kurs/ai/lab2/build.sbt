@@ -1,12 +1,13 @@
-name := "ii1"
+name := "lab2"
 
 version := "0.1"
 
-scalaVersion := "2.13.3"
+scalaVersion := "2.12.12"
 
 val circeVersion  = "0.13.0"
 val akkaV         = "2.6.10"
 val akkaHttpV     = "10.2.1"
+val sparkV        = "3.0.1"
 
 libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % akkaV,
@@ -18,4 +19,6 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-scodec" % circeVersion,
   "de.heikoseeberger" %% "akka-http-circe" % "1.28.0",
   "io.circe" %% "circe-literal" % circeVersion,
+  "org.apache.spark" %% "spark-core" % sparkV,
+  "org.apache.spark" %% "spark-mllib" % sparkV
 )

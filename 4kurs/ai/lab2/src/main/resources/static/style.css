@@ -1,0 +1,87 @@
+body {
+    margin:0;
+    padding:0;
+    font-family: sans-serif;
+    background: linear-gradient(#141e30, #243b55);
+}
+
+html {
+    height: 100%;
+}
+canvas {
+    image-rendering: optimizeSpeed;             /* Older versions of FF          */
+    image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+    image-rendering: -webkit-optimize-contrast; /* Safari                        */
+    image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+    image-rendering: pixelated;                 /* Awesome future-browsers       */
+    -ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+
+.letter-field {
+    background-color: #4c6e50;
+    width: 200px;
+}
+
+.button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    width: 150px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.pics-first-row, .pics-second-row {
+    display: flex;
+    margin-top: 150px;
+    margin-left: 400px;
+}
+
+.pics-second-row {
+    margin-top: 70px;
+    display: flex;
+    margin-left: 400px;
+}
+.saved {
+    padding-right: 20px;
+}
+.buttons {
+    width: 200px;
+    padding-left: 245px;
+}
+
+#button-save {
+    background-color: white;
+    color: black;
+    border: 2px solid #4CAF50;
+}
+
+#button-save:hover {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#button-recognize {
+    background-color: white;
+    color: black;
+    border: 2px solid #008CBA;
+}
+
+#button-recognize:hover {
+    background-color: #008CBA;
+    color: white;
+}
+
+#button-clear {
+    background-color: white;
+    color: black;
+    border: 2px solid #f44336;
+}
+
+#button-clear:hover {
+    background-color: #f44336;
+    color: white;
+}
