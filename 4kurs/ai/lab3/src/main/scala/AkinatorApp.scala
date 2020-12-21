@@ -14,6 +14,7 @@ object AkinatorApp extends App {
   }
   
   val allMovies = collection.mutable.Set(FileMoviesFetcher.getMoviesFromFile(sys.env("MOVIES_FILE_PATH")) :_*)
+  
   val moviesGroups = Map(
     "country" -> allMovies.groupBy(_.country),
     "title"   -> allMovies.groupBy(_.title),
@@ -47,9 +48,10 @@ object AkinatorApp extends App {
     }
   }
   
-  def getMostCommonProperty(ignoredProperties: Set[String] = Set.empty): (String, (String, collection.mutable.Set[Movie])) = {
+  def getMostCommonProperty(ignoredProperties: Set[String] = Set.empty, ignoredValues: Set[String] = Set.empty): (String, (String, collection.mutable.Set[Movie])) = {
     moviesGroups.toSeq.map { case (property, valuesMap) =>
       (property, valuesMap
+        .filter { case (value, moviesSet) => !ignoredValues.contains(value) }
         .maxBy { case (value, moviesSet) => moviesSet.size })
     }
       .filter { case (property, _) => !ignoredProperties.contains(property) }
@@ -57,7 +59,6 @@ object AkinatorApp extends App {
   }
   
   def maybeGetMoviesThatAreTwoOrLessForProperty(): List[Movie] = {
-    println()
     val minMoviesForProperty =
       moviesGroups
         .toSeq
@@ -68,18 +69,18 @@ object AkinatorApp extends App {
   }
   
   @tailrec
-  def guessMovie(ignoredProperties: Set[String] = Set("title")): Option[Movie] = {
-    val (property, (value, movies)) = getMostCommonProperty(ignoredProperties)
+  def guessMovie(ignoredProperties: Set[String] = Set("title"), ignoredValues: Set[String] = Set.empty): Option[Movie] = {
+    val (property, (value, movies)) = getMostCommonProperty(ignoredProperties, ignoredValues)
     println(s"$property $value? y/n/idk")
     val answer = scala.io.StdIn.readLine()
-    val resIgnoredProps = answer match {
+    val (resIgnoredProps, resIgnoredValues) = answer match {
       case "y"   =>
         (allMovies diff movies).foreach(m => removeMovieFromAllGroups(m))
-        ignoredProperties + property
+        (ignoredProperties + property, ignoredValues)
       case "n"   =>
         movies.foreach(m => removeMovieFromAllGroups(m))
-        ignoredProperties
-      case  _ => ignoredProperties + property
+        (ignoredProperties, ignoredValues + value)
+      case  _ => (ignoredProperties, ignoredValues + value)
     }
     maybeGetMoviesThatAreTwoOrLessForProperty() match {
       case (m1 :: m2 :: Nil) =>
@@ -91,9 +92,9 @@ object AkinatorApp extends App {
       case (m1 :: Nil)       => Some(m1)
       case _                 =>
       if (resIgnoredProps.size == 7) {
-        println(s"failed to guess movie, possible answers are ${allMovies}")
+        println(s"failed to guess movie, possible answers are ${allMovies.map(_.title)}")
         None
-      } else guessMovie(resIgnoredProps)
+      } else guessMovie(resIgnoredProps, resIgnoredValues)
     }
   }
   
