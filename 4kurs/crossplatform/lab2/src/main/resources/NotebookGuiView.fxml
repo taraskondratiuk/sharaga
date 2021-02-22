@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.scala.controller.NotebookGuiController">
+   <children>
+      <TextField fx:id="noteField" layoutX="14.0" layoutY="461.0" prefHeight="25.0" prefWidth="776.0" />
+      <Button fx:id="addBtn" layoutX="808.0" layoutY="461.0" mnemonicParsing="false" onAction="#handleAddNoteClick" prefHeight="25.0" prefWidth="78.0" text="add" />
+      <TableView fx:id="notesTable" prefHeight="452.0" prefWidth="900.0">
+
+      </TableView>
+   </children>
+</Pane>
