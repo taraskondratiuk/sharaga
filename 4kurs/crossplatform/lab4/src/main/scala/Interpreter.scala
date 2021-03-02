@@ -1,4 +1,4 @@
-import scala.util.{Failure, Success, Try}
+import scala.language.postfixOps
 import sys.process._
 
 object Interpreter extends App with Helpers {
@@ -27,10 +27,9 @@ object Interpreter extends App with Helpers {
     val resCommand = if (isWindows) {
       s"cmd.exe /c ${windowsCommands(command.head)} ${args.mkString(" ")}"
     } else {
-      s"${linuxCommands(command.head)} ${args.mkString(" ")}"
+      s"""sh -c "${linuxCommands(command.head)} ${args.mkString(" ")}" """
     }
     println(resCommand)
     resCommand !
   }
-  
 }

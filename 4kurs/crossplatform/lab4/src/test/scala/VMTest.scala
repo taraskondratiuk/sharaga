@@ -8,7 +8,4 @@ class VMTest extends AnyFlatSpec{
   "interpreter" should "run bytecode" in {
     Interpreter.main(Array("src/test/resources/test_commands.bytecode"))
   }
-  
-  
-  
 }
