@@ -1,0 +1,10 @@
+createFile file123.txt
+createDirectory dir321
+listFiles
+echo  1
+sleep 5
+echo  2
+sleep 5
+echo  3
+sleep 5
+echo 8!
