@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
-#include <math.h>
 
 int squareInt(int x) {
 	printf("calling square for %d\n", x);
@@ -20,6 +19,24 @@ double squareDouble(double x) {
 	return x * x;
 }
 
-void printString(char* str) {
-    printf("%s\n", str);
+char* newStringToUppercase(char* str) {
+    printf("calling new string toUppercase() for %s\n", str);
+    char* tmp = (char*) malloc(strlen(str) * sizeof(char));
+    char* res = tmp;
+    while (*tmp) {
+        *tmp = toupper((unsigned char) *str);
+        tmp++;
+        str++;
+    }
+    return res;
+}
+
+char* mutateStringToUppercase(char* str) {
+    printf("calling mutating toUppercase() for %s\n", str);
+    char* tmp = str;
+    while (*tmp) {
+        *tmp = toupper((unsigned char) *tmp);
+        tmp++;
+    }
+    return str;
 }

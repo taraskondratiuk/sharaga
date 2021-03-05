@@ -1,21 +1,25 @@
 %module lib
 
 %{
+
 extern int squareInt(int);
 
 extern float squareFloat(float);
 
 extern double squareDouble(double);
 
-extern void printString(char*);
+extern char* newStringToUppercase(char*);
+
+extern char* mutateStringToUppercase(char*);
 %}
 
 
-extern int squareInt(int);
+int squareInt(int);
 
-extern float squareFloat(float);
+float squareFloat(float);
 
-extern double squareDouble(double);
+double squareDouble(double);
 
-extern void printString(char*);
+char* newStringToUppercase(char*);
 
+char* mutateStringToUppercase(char*);
